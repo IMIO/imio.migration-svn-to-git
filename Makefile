@@ -7,9 +7,10 @@ install:
 	cd imio.github && ../bin/python setup.py develop
 
 cleanup: 
-	rm -f log* rules.* *\.repos
+	rm -f log* rules.* *\.repos *.log
 	touch repos
 	for r in `cat repos`; do rm -vfr $$r;done;
+	rm repos
 
 generate-rules: cleanup
 	svn ls imio-svn/svn-root2-checkout/communesplone/ | grep -v buildout | grep -v -f ignore.repos > communesplone.repos
