@@ -14,14 +14,14 @@ checkout:
 	svn co --ignore-externals file:///$$PWD/imio-svn/svn-root2 $$PWD/imio-svn/svn-root2-checkout
 
 migrate: cleanup
-	svn-all-fast-export --identity-map authors --rules rules.sites $$PWD/imio-svn/svn-root2
+	for r in rules.*; do svn-all-fast-export --identity-map authors --rules $$r $$PWD/imio-svn/svn-root2;done;
 
 authors: checkout
 	cd $$PWD/imio-svn/svn-root2-checkout && svn log -q | grep -e '^r' | awk 'BEGIN { FS = "|" } ; { print $$2 }' | sort | uniq > ../../authors.raw
 	sed -i 's/ \(.*\) /\1 = \1 <\1@imio.be>/g' authors.raw
 
 migrate-test:
-	svn-all-fast-export --dry-run --identity-map authors --rules rules.sites $$PWD/imio-svn/svn-root2
+	for r in rules.*; do svn-all-fast-export --dry-run --identity-map authors --rules $$r $$PWD/imio-svn/svn-root2;done;
 
 create-all-repos-on-github:
 	grep "create " rules.*|awk '{print $$3}' > repos
