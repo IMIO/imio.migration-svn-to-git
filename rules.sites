@@ -1,0 +1,10 @@
+create repository buildout.website
+end repository
+
+match /communesplone/buildout/server.sites/tags/([^/]+)/
+    repository buildout.website
+    branch \1
+end match
+
+match /
+end match
