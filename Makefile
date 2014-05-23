@@ -12,9 +12,9 @@ cleanup:
 	for r in `cat repos`; do rm -vfr $$r;done;
 	rm repos
 
-generate-rules: cleanup
-	svn ls imio-svn/svn-root2-checkout/communesplone/ | grep -v buildout | grep -v -f ignore.repos > communesplone.repos
-	svn ls imio-svn/svn-root2-checkout/communesplone/buildout/ | grep -v -f ignore.repos > communesplone.buildout.repos
+generate-rules: cleanup checkout
+	svn ls imio-svn/svn-root2-checkout/communesplone/ | grep -v buildout | grep -v -f ignore > communesplone.repos
+	svn ls imio-svn/svn-root2-checkout/communesplone/buildout/ | grep -v -f ignore > communesplone.buildout.repos
 	sed -i 's/\$$//g' communesplone.repos communesplone.buildout.repos
 	./generator.py communesplone.repos > rules.root
 	./generator-buildout.py communesplone.buildout.repos > rules.buildout
