@@ -1,0 +1,20 @@
+create repository Products.directory
+end repository
+
+match /communesplone/Products.directory/trunk/
+    repository Products.directory
+    branch master
+end match
+
+match /communesplone/Products.directory/tags/([^/]+)/
+    repository Products.directory
+    branch refs/tags/\1
+end match
+
+match /communesplone/Products.directory/branches/([^/]+)/
+    repository Products.directory
+    branch \1
+end match
+
+match /
+end match
