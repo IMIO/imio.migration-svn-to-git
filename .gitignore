@@ -10,3 +10,4 @@ lib/
 local/
 log-*
 repos
+rules.*
