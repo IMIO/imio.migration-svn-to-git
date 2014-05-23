@@ -28,7 +28,7 @@ rules: generate-rules
 sync-svn:
 	rsync -arv zope@devel.imio.be:/srv/subversion/svn-root2 imio-svn
 
-checkout:
+checkout: sync-svn
 	svn co --ignore-externals file:///$$PWD/imio-svn/svn-root2 $$PWD/imio-svn/svn-root2-checkout
 
 migrate: rules
