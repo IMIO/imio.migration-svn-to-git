@@ -2,6 +2,7 @@ authors
 authors.raw
 bin/
 buildout.*
+*.repos
 github_script.log
 imio-svn/
 include/
