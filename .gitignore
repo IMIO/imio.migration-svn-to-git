@@ -1,0 +1,11 @@
+authors
+authors.raw
+bin/
+buildout.*
+github_script.log
+imio-svn/
+include/
+lib/
+local/
+log-*
+repos

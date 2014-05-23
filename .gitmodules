@@ -1,0 +1,3 @@
+[submodule "imio.github"]
+	path = imio.github
+	url = git@github.com:IMIO/imio.github.git
