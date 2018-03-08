@@ -2,9 +2,14 @@ all-no-push: cleanup sync-svn checkout migrate-test migrate create-all-repos-on-
 
 all: all-no-push push-all
 
-install:
+
+init:
+	git submodule update --init
+	git clone https://github.com/svn-all-fast-export/svn2git
+	sudo apt-get install -y build-essential subversion git qtchooser qt5-default libapr1 libapr1-dev libsvn-dev
+	cd svn2git/ && qmake && make
 	virtualenv .
-	cd imio.github && ../bin/python setup.py develop
+	cd imio.github && ../bin/python setup.py install
 
 cleanup: 
 	rm -f log* rules.* *\.repos *.log
@@ -19,7 +24,7 @@ generate-rules: cleanup checkout
 	./generator.py communesplone.repos > rules.root
 	./generator-buildout.py communesplone.buildout.repos > rules.buildout
 
-rules: generate-rules
+rules:
 	cat rules.root > rules.all
 	cat rules.buildout >> rules.all
 	echo "match / \nend match" >> rules.all
@@ -32,14 +37,14 @@ checkout: sync-svn
 	svn co --ignore-externals file:///$$PWD/imio-svn/svn-root2 $$PWD/imio-svn/svn-root2-checkout
 
 migrate: rules
-	svn-all-fast-export --identity-map authors --rules rules.all $$PWD/imio-svn/svn-root2
+	svn2git/svn-all-fast-export --identity-map authors --rules rules.all $$PWD/imio-svn/svn-root2
 
 authors: checkout
 	cd $$PWD/imio-svn/svn-root2-checkout && svn log -q | grep -e '^r' | awk 'BEGIN { FS = "|" } ; { print $$2 }' | sort | uniq > ../../authors.raw
 	sed -i 's/ \(.*\) /\1 = \1 <\1@imio.be>/g' authors.raw
 
 migrate-test: rules
-	svn-all-fast-export --dry-run --identity-map authors --rules rules.all $$PWD/imio-svn/svn-root2
+	svn2git/svn-all-fast-export --dry-run --identity-map authors --rules rules.all $$PWD/imio-svn/svn-root2
 
 create-all-repos-on-github:
 	bin/create_repos_from_file repos
