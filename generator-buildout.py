@@ -1,4 +1,5 @@
-#! /usr/bin/python
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
 import sys
 f = sys.argv[1]
 template = """
@@ -24,6 +25,6 @@ with open(f, 'r') as fd:
         repo = repo.strip('/')
         repo_name = repo
         repo_with_re = repo.replace('.', '\.')
-        print template % {'repo_name': repo_name,
+        print(template % {'repo_name': repo_name,
                           'repo_with_re': repo_with_re,
-                          'path': path}
+                          'path': path})
